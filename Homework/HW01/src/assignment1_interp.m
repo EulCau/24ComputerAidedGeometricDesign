@@ -89,7 +89,7 @@ function yhat = rbfInterpConstTail(x, y, xs, d, lambda)
     %   x      : n x dim matrix of data point coordinates
     %   y      : n x 1 vector of target values
     %   xs     : m x dim matrix of query points
-    %   d      : shape parameter for kernel (default 1e-3)
+    %   d      : shape parameter for kernel (default 1e-1)
     %   lambda : small regularization parameter (default 1e-12)
     %
     % OUTPUT:
