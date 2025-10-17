@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\setlength{\parindent}{2em}
+
+\begin{document}
+    \title{计算机辅助几何设计作业三}
+    \author{姓名: 刘行 \quad 学号: PB22000150}
+    \date{}
+    \maketitle
+
+    \section*{第1题: 证明 Bézier 曲线的弧长不大于控制多边形的周长}
+        设 Bézier 曲线为
+        \begin{equation*}
+            \mathbf{B}\left(t\right) = \sum_{i=0}^{n} B_{i} \, b_{i,n}\left(t\right), \quad t \in [0,1], \quad b_{i,n}\left(t\right) = \binom{n}{i} t^{i} (1-t)^{n-i}
+        \end{equation*}
+
+        弧长公式为:
+        \begin{equation*}
+            L = \int_{0}^{1} \left\lvert\mathbf{B}^{\prime}(t)\right\rvert \, \text{d}t.
+        \end{equation*}
+
+        而 Bézier 曲线的导数为:
+        \begin{equation*}
+            \mathbf{B}^{\prime}(t) = n \sum_{i=0}^{n-1} (B_{i+1} - B_{i}) \, b_{i,n-1}\left(t\right).
+        \end{equation*}
+
+        由三角不等式:
+        \begin{equation*}
+            \left\lvert\mathbf{B}^{\prime}\left(t\right)\right\rvert \leq n \sum_{i=0}^{n-1} \left\lvert B_{i+1}-B_{i}\right\rvert \, b_{i,n-1}\left(t\right).
+        \end{equation*}
+
+        两边对 $t$ 从 0 到 1 积分:
+        \begin{equation*}
+            L \leq n \sum_{i=0}^{n-1} \left\lvert B_{i+1}-B_{i}\right\rvert \int_{0}^{1} b_{i,n-1}\left(t\right) \, \text{d}t.
+        \end{equation*}
+
+        由 $\int_{0}^{1} b_{i,n-1}\left(t\right) \, \text{d}t = \frac{1}{n}$, 得:
+        \begin{equation*}
+            L \leq \sum_{i=0}^{n-1} \left\lvert B_{i+1}-B_{i}\right\rvert.
+        \end{equation*}
+
+        右边即控制多边形的周长, 故证得:
+        \begin{equation*}
+            L_{\text{Bézier}} \leq L_{\text{control polygon}}.
+        \end{equation*}
+
+    \section*{第2题: 证明圆弧不能被 Bézier 曲线精确表示}
+        若圆弧能被 Bézier 曲线精确表示, 则 Bézier 曲线应满足圆的方程:
+        \begin{equation*}
+            x^{2} + y^{2} = R^{2}.
+        \end{equation*}
+
+        然而, $x\left(t\right)$ 和 $y\left(t\right)$ 都是关于 $t$ 的多项式, 因此 $x^{2} + y^{2}$ 也是多项式, 且因为 $x^{2}$ 与 $y^{2}$ 最高次项系数均为正, 它们的和的最高次项系数也为正. 于是 $x^{2}$ 与 $y^{2}$ 最高次项均为零次. 曲线退化为点. 矛盾.
+
+    \section*{第3题: 求平面 n 次 Bézier 曲线与原点及首末控制点围成区域的面积}
+        设 Bézier 曲线为:
+        \begin{equation*}
+            \mathbf{B}\left(t\right) = \left(x\left(t\right), y\left(t\right)\right) = \sum_{i=0}^{n} \left(x_{i}, y_{i}\right) \, b_{i,n}(t).
+        \end{equation*}
+
+        由格林公式, 曲线与两直线 (连接原点与端点) 围成区域的有向面积为:
+        \begin{equation*}
+            A = \frac{1}{2}\int_{0}^{1} \left( x\left(t\right)y^{\prime}\left(t\right) - y\left(t\right)x^{\prime}\left(t\right) \right) \, \text{d}t.
+        \end{equation*}
+
+        代入 Bézier 形式:
+        \begin{equation*}
+            x^{\prime}\left(t\right) = n \sum_{i=0}^{n-1} (x_{i+1}-x_{i}) b_{i,n-1}\left(t\right), \quad
+            y^{\prime}\left(t\right) = n \sum_{i=0}^{n-1} (y_{i+1}-y_{i}) b_{i,n-1}\left(t\right).
+        \end{equation*}
+
+        于是:
+        \begin{equation*}
+            A = \frac{n}{2}\int_{0}^{1} \sum_{i=0}^{n}\sum_{j=0}^{n-1} \left[x_{i}\left(y_{j+1}-y_{j}\right) - y_{i}(x_{j+1}-x_{j})\right] \, b_{i,n}\left(t\right) \, b_{j,n-1}\left(t\right) \, \text{d}t.
+        \end{equation*}
+
+        由 Bernstein 基函数的积积分恒等式:
+        \begin{equation*}
+            \int_{0}^{1} b_{i,n}\left(t\right) b_{j,n-1}\left(t\right) \, \text{d}t = \frac{1}{\left(2n\right)!} \cdot \frac{\left(n+i\right)! \, \left(n-j-1\right)!}{i! \, j!}.
+        \end{equation*}
+
+        因此:
+        \begin{equation*}
+        A = \frac{n}{2} \sum_{i=0}^{n}\sum_{j=0}^{n-1} \left[x_{i}\left(y_{j+1} - y_{j}\right) - y_{i}\left(x_{j+1} - x_{j}\right)\right] \int_{0}^{1} b_{i,n}\left(t\right) \, b_{j,n-1}(t) \, \text{d}t.
+        \end{equation*}
+
+        这就是面积的显式公式, 它完全由控制点 $(x_i,y_i)$ 表达.
+\end{document}
