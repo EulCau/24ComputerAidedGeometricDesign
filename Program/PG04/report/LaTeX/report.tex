@@ -1,0 +1,94 @@
+% homework4_problem1.tex
+\documentclass[12pt]{ctexart}
+\usepackage{amsmath,amssymb,amsthm}
+\setlength{\parindent}{2em} % 首行缩进两字符
+\allowdisplaybreaks
+
+\title{计算机辅助几何设计 — 作业 4\\题目 1（证明）}
+\author{}
+\date{2025 年 10 月 13 日}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{题目：} 设 $f(x)\in C^2[a,b]$ 为任意插值函数，$S(x)$ 为自然三次样条插值函数（两端点处二阶导数为零），证明
+\[
+\int_a^b \bigl(S''(x)\bigr)^2\,dx \le \int_a^b \bigl(f''(x)\bigr)^2\,dx,
+\]
+并且当且仅当 $f(x)\equiv S(x)$ 时取等号。
+
+\bigskip
+
+\noindent\textbf{证明：}
+
+\noindent 设插值节点为
+\[
+a=x_0<x_1<\cdots<x_n=b,
+\]
+并且规定 $f(x_i)=S(x_i)=y_i$，对任意满足相同插值条件的 $C^2$ 函数 $f$ 定义误差函数
+\[
+\eta(x)=f(x)-S(x).
+\]
+由插值条件有 $\eta(x_i)=0$，$i=0,1,\dots,n$。
+
+\medskip
+
+\noindent 考察积分
+\[
+\int_a^b \bigl(f''(x)\bigr)^2\,dx
+= \int_a^b \bigl(S''(x)+\eta''(x)\bigr)^2\,dx
+= \int_a^b \bigl(S''(x)\bigr)^2\,dx
+  + 2\int_a^b S''(x)\eta''(x)\,dx
+  + \int_a^b \bigl(\eta''(x)\bigr)^2\,dx.
+\]
+
+\noindent 我们的关键目标是证明交叉项为零，即
+\[
+\int_a^b S''(x)\eta''(x)\,dx = 0.
+\]
+
+\noindent 由自然三次样条的边界条件知 $S''(a)=S''(b)=0$。对区间 $[a,b]$ 分段积分（在每个子区间 $[x_i,x_{i+1}]$ 上分别处理）并利用样条在每一小区间上为三次多项式的事实，可以得到交叉项为零。下面给出一个较为直接的分部积分证明。
+
+\medskip
+
+\noindent 首先分部积分一次：
+\[
+\int_a^b S''(x)\eta''(x)\,dx
+= \bigl[S''(x)\eta'(x)\bigr]_a^b - \int_a^b S'''(x)\eta'(x)\,dx.
+\]
+由于 $S''(a)=S''(b)=0$，第一项为零，因此
+\[
+\int_a^b S''(x)\eta''(x)\,dx = -\int_a^b S'''(x)\eta'(x)\,dx.
+\]
+
+\noindent 接下来在每个子区间 $[x_i,x_{i+1}]$ 上再分部积分一次（注意 $S'''(x)$ 在每个子区间内为常数，因为 $S$ 在每段上是三次多项式）：
+\[
+\int_{x_i}^{x_{i+1}} S'''(x)\eta'(x)\,dx
+= \bigl[S'''(x)\eta(x)\bigr]_{x_i}^{x_{i+1}} - \int_{x_i}^{x_{i+1}} S^{(4)}(x)\eta(x)\,dx.
+\]
+但对三次多项式有 $S^{(4)}(x)=0$，于是
+\[
+\int_{x_i}^{x_{i+1}} S'''(x)\eta'(x)\,dx = S'''(x)\bigl(\eta(x_{i+1})-\eta(x_i)\bigr).
+\]
+由于对所有节点 $\eta(x_i)=0$，右端为零。对所有区间求和得到
+\[
+\int_a^b S'''(x)\eta'(x)\,dx = 0.
+\]
+因此有
+\[
+\int_a^b S''(x)\eta''(x)\,dx = 0.
+\]
+
+\medskip
+
+\noindent 将该结果代回前式，可得
+\[
+\int_a^b \bigl(f''(x)\bigr)^2\,dx
+= \int_a^b \bigl(S''(x)\bigr)^2\,dx + \int_a^b \bigl(\eta''(x)\bigr)^2\,dx
+\ge \int_a^b \bigl(S''(x)\bigr)^2\,dx.
+\]
+由此得到所需不等式。并且等号成立当且仅当 $\int_a^b (\eta''(x))^2\,dx=0$，即当且仅当 $\eta''(x)\equiv 0$。因为 $\eta$ 在所有节点处为 0，且 $\eta''\equiv 0$ 意味着 $\eta$ 在每段上为一次多项式，但若一个一次多项式在至少两个不同点为零，则该多项式恒为零，于是 $\eta\equiv 0$，即 $f\equiv S$。
+
+\qed
+
+\end{document}
